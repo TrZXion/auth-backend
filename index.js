@@ -41,7 +41,7 @@ const isAuthenticated = async (req, res, next) => {
   const { token } = req.cookies;
   if (token) {
     // res.render("logout");
-    const decoded = jwt.verify(token, "jjvbjibvgdvgduvgibuivb");
+    const decoded = jwt.verify(token, process.env.TOKEN);
     // console.log(decode);
 
     req.userId = await User.findById(decoded._id);
@@ -94,7 +94,7 @@ app.post("/register", async (req, res) => {
     password: hashedPassword,
   });
 
-  const token = jwt.sign({ _id: userId._id }, "jjvbjibvgdvgduvgibuivb");
+  const token = jwt.sign({ _id: userId._id }, process.env.TOKEN);
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + 60 * 1000),
